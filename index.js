@@ -43,23 +43,18 @@ async function run() {
 
 
         // get recipe Details by id Dynamically
+
         app.get('/details/:id', async (req, res) => {
             const searchReceipe = req.params.id;
-            // console.log(searchReceipe);
-            const receipe = { _id: ObjectId(searchReceipe) };
-            // console.log(receipe)
+            console.log(searchReceipe);
+            const receipe = { _id: new ObjectId(searchReceipe) };
             const query = await allInfo.find(receipe).toArray();
-            // console.log(query)
             res.send(query)
         });
-        // http://localhost:5000/details/63d494a3d7058ba76a9c1c3a
-
 
         // Search Query for HomePage
+
         app.get('/search', async (req, res) => {
-            // const searchField = req.query.title;
-            // console.log(searchField);
-            // const data = await allInfo.find({ title: { $regex: searchField, $options: 'i' } }).toArray();
             const searchField = req.query.strMeal;
             const data = await allInfo.find({ strMeal: { $regex: searchField, $options: 'i' } }).toArray();
             res.send(data)
@@ -68,6 +63,7 @@ async function run() {
 
 
         // Register data is posting
+
         app.post('/register', async (req, res) => {
             const user = req.body;
             // console.log(user);
@@ -88,33 +84,24 @@ async function run() {
         // Buyer Email Based for Custom Hooks
         app.get('/buyer/:email', async (req, res) => {
             const email = req.params.email;
-            // console.log(email);
             const query = { userEmail: email };
-            // console.log(query);
             const user = await allUsers.findOne(query);
-            // console.log(user);
             res.send({ isBuyer: user?.userRole === 'Buyer' })
         });
 
         // Admin Email Based for Custom Hooks
         app.get('/admin/:email', async (req, res) => {
             const email = req.params.email;
-            // console.log(email);
             const query = { userEmail: email }
-            // console.log(query);
             const result = await allUsers.findOne(query);
-            // console.log(result);
             res.send({ isAdmin: result?.userRole === 'Admin' })
         });
 
         // Seller Email Based for Custom Hooks
         app.get('/seller/:email', async (req, res) => {
             const email = req.params.email;
-            // console.log(email);
             const query = { userEmail: email };
-            // console.log(query);
             const user = await allUsers.findOne(query);
-            // console.log(user);
             res.send({ isSeller: user?.userRole === 'Seller' })
         });
 
@@ -122,7 +109,6 @@ async function run() {
         // Buyer Get his product by his email
         app.get('/buyerProductsByEmail', async (req, res) => {
             email = req.query.email;
-            // console.log(email);
             const query = { userEmail: email };
             const product = await allBooking.find(query).toArray();
             res.send(product);
@@ -141,7 +127,6 @@ async function run() {
         // Seller Product Gets Based On email
         app.get('/sellerProductsByEmail', async (req, res) => {
             email = req.query.email;
-            // console.log(email);
             const query = { userEmail: email };
             const product = await allInfo.find(query).toArray();
             res.send(product);
@@ -161,7 +146,6 @@ async function run() {
         app.get('/allusers', async (req, res) => {
             const query = {}
             const user = await allUsers.find(query).toArray();
-            // console.log(user);
             res.send(user);
         });
 
@@ -170,7 +154,6 @@ async function run() {
         app.get('/allbuyers', async (req, res) => {
             const query = { userRole: "Buyer" };
             const user = await allUsers.find(query).toArray();
-            // console.log(user);
             res.send(user);
         });
 
@@ -179,7 +162,6 @@ async function run() {
         app.get('/allsellers', async (req, res) => {
             const query = { userRole: "Seller" };
             const user = await allUsers.find(query).toArray();
-            // console.log(user);
             res.send(user);
         });
 
@@ -225,62 +207,10 @@ async function run() {
         // Delete Product from Buyer's product
         app.delete('/BuyerProduct/:id', async (req, res) => {
             const id = req.params.id;
-            // console.log(id);
             const query = { _id: ObjectId(id) };
-            // console.log(query);
             const user = await allBooking.deleteOne(query);
             res.send(user);
         });
-
-
-
-
-
-        // --------------------------------------AssignMent12-Server All Code--------------------------------------
-
-
-
-
-
-
-
-
-
-
-        // app.get('/blog', async (req, res) => {
-        //     const query = {};
-        //     const blogs = await blogColl.find(query).toArray();
-        //     res.send(blogs)
-        // });
-
-        // 
-
-
-
-        // Product Payment
-
-        // app.get('/dashboard/dash1boar1db1/pay/:id', async (req, res) => {
-
-        //     const id = req.params.id;
-        //     const query = { _id: ObjectId(id) };
-        //     const result = await bookedColl.findOne(query);
-        //     res.send(result);
-        // })
-
-        // Get the ads
-
-        // app.get('/ads', async (req, res) => {
-        //     const query = {};
-        //     const options = await adsColl.find(query).toArray();
-        //     res.send(options);
-        // });
-
-        // Buyer booked Product post
-        // app.post('/booked', async (req, res) => {
-        //     const product = req.body;
-        //     const result = await bookedColl.insertOne(product);
-        //     res.send(result);
-        // });
 
     } catch (error) {
 
